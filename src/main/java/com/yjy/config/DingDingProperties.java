@@ -1,5 +1,6 @@
 package com.yjy.config;
 
+import com.yjy.common.enums.AppTypeEnum;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -16,7 +17,7 @@ public class DingDingProperties {
      */
     private String corpId;
     /**
-     * 应用类型 {{@link com.yjy.common.AppType}}
+     * 应用类型 {{@link AppTypeEnum}}
      */
     private String appType;
     /**

@@ -1,7 +1,7 @@
 package com.yjy.service.sdk;
 
 import com.yjy.bean.dto.dingding.*;
-import com.yjy.common.QuestionException;
+import com.yjy.common.exception.QuestionException;
 
 /**
  * @author zhangjl
@@ -51,11 +51,11 @@ public interface IDingDingUserSdk {
 
     /**
      * 查询部门用户列表
-     *
+     *（如果被设置为管理员则不包含在这里）
      * @param lang   通讯录语言(默认zh_CN另外支持en_US)
      * @param deptId 获取的部门id
      * @param offset 支持分页查询，与size参数同时设置时才生效，此参数代表偏移量
-     * @param size   支持分页查询，与offset参数同时设置时才生效，此参数代表分页大小，最大100
+     * @param size   支持分页查询，与offset参数同时设置时才生效，此参数代表分页大小，最大100 从0开始
      * @param order  支持分页查询，部门成员的排序规则，默认不传是按自定义排序；
      *               entry_asc：代表按照进入部门的时间升序，
      *               entry_desc：代表按照进入部门的时间降序，
@@ -65,10 +65,11 @@ public interface IDingDingUserSdk {
 
     /**
      * 查询部门用户列表
+     * （如果被设置为管理员则不包含在这里）
      *
      * @param deptId 获取的部门id
      * @param offset 支持分页查询，与size参数同时设置时才生效，此参数代表偏移量
-     * @param size   支持分页查询，与offset参数同时设置时才生效，此参数代表分页大小，最大100
+     * @param size   支持分页查询，与offset参数同时设置时才生效，此参数代表分页大小，最大100 从0开始
      * @param order  支持分页查询，部门成员的排序规则，默认不传是按自定义排序；
      *               entry_asc：代表按照进入部门的时间升序，
      *               entry_desc：代表按照进入部门的时间降序，
@@ -78,6 +79,7 @@ public interface IDingDingUserSdk {
 
     /**
      * 查询部门用户列表
+     * （如果被设置为管理员则不包含在这里）
      *
      * @param deptId 获取的部门id
      * @return
@@ -87,11 +89,12 @@ public interface IDingDingUserSdk {
 
     /**
      * 查询部门用户详情列表
+     * （如果被设置为管理员则不包含在这里）
      *
      * @param lang   通讯录语言(默认zh_CN另外支持en_US)
      * @param deptId 获取的部门id
      * @param offset 支持分页查询，与size参数同时设置时才生效，此参数代表偏移量
-     * @param size   支持分页查询，与offset参数同时设置时才生效，此参数代表分页大小，最大100
+     * @param size   支持分页查询，与offset参数同时设置时才生效，此参数代表分页大小，最大100 从0开始
      * @param order  支持分页查询，部门成员的排序规则，默认不传是按自定义排序；
      *               entry_asc：代表按照进入部门的时间升序，
      *               entry_desc：代表按照进入部门的时间降序，
@@ -101,10 +104,10 @@ public interface IDingDingUserSdk {
 
     /**
      * 查询部门用户详情列表
-     *
+     * （如果被设置为管理员则不包含在这里）
      * @param deptId 获取的部门id
      * @param offset 支持分页查询，与size参数同时设置时才生效，此参数代表偏移量
-     * @param size   支持分页查询，与offset参数同时设置时才生效，此参数代表分页大小，最大100
+     * @param size   支持分页查询，与offset参数同时设置时才生效，此参数代表分页大小，最大100 从0开始
      * @param order  支持分页查询，部门成员的排序规则，默认不传是按自定义排序；
      *               entry_asc：代表按照进入部门的时间升序，
      *               entry_desc：代表按照进入部门的时间降序，
@@ -114,6 +117,7 @@ public interface IDingDingUserSdk {
 
     /**
      * 查询部门用户详情列表
+     * （如果被设置为管理员则不包含在这里）
      *
      * @param deptId 获取的部门id
      * @return
@@ -165,9 +169,17 @@ public interface IDingDingUserSdk {
      * 获取accessToken
      * 正常情况下access_token有效期为7200秒，有效期内重复获取返回相同结果，并自动续期
      *
-     * @param appSecret secret
+     * @param appSecret secret  可以为空
      * @return
      * @throws QuestionException
      */
     String getAccessToken(String appSecret) throws QuestionException;
+
+    /**
+     * 获取token
+     *
+     * @return
+     * @throws QuestionException
+     */
+    String getAccessToken() throws QuestionException;
 }

@@ -1,13 +1,16 @@
 package com.yjy.service.sdk;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.yjy.bean.dto.dingding.*;
-import com.yjy.common.ErrorCode;
+import com.yjy.common.enums.ErrorCodeEnum;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.request.*;
-import com.yjy.common.QuestionException;
+import com.yjy.common.exception.QuestionException;
 import com.dingtalk.api.response.OapiGettokenResponse;
 import com.taobao.api.ApiException;
+import com.yjy.entity.AppInfo;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -54,9 +57,10 @@ public class DingDingUserSdk extends AbstractDingDingSdk implements IDingDingUse
 
     @Override
     public DeptUsersDto queryDeptUsers(String lang, Long deptId, Long offset, Long size, String order) throws QuestionException {
+        offset = ObjectUtil.isEmpty(offset) ? 0L : offset;
         OapiUserSimplelistRequest request = new OapiUserSimplelistRequest();
         request.setDepartmentId(deptId);
-        request.setOffset(offset);
+        request.setOffset(offset * size + 1);
         request.setSize(size);
         request.setLang(lang);
         request.setHttpMethod("GET");
@@ -75,9 +79,10 @@ public class DingDingUserSdk extends AbstractDingDingSdk implements IDingDingUse
 
     @Override
     public DeptUserDetailsDto queryDeptUserDetails(String lang, Long deptId, Long offset, Long size, String order) throws QuestionException {
+        offset = ObjectUtil.isEmpty(offset) ? 0L : offset;
         OapiUserListbypageRequest request = new OapiUserListbypageRequest();
         request.setDepartmentId(deptId);
-        request.setOffset(offset);
+        request.setOffset(offset * size + 1);
         request.setSize(size);
         request.setOrder(order);
         request.setLang(lang);
@@ -134,12 +139,25 @@ public class DingDingUserSdk extends AbstractDingDingSdk implements IDingDingUse
         try {
             response = client.execute(request);
         } catch (ApiException e) {
-            throw new QuestionException(ErrorCode.ERROR_10001.getCode(), "token获取失败");
+            throw new QuestionException(ErrorCodeEnum.ERROR_10001.getCode(), "token获取失败");
         }
         log.info("获取token请求，result:{}", JSON.toJSONString(response));
         if (response == null || response.getErrcode() != 0) {
-            throw new QuestionException(ErrorCode.ERROR_10001.getCode(), "token获取失败");
+            throw new QuestionException(ErrorCodeEnum.ERROR_10001.getCode(), "token获取失败");
         }
         return response.getAccessToken();
+    }
+
+    @Override
+    public String getAccessToken() throws QuestionException {
+        if (StrUtil.isEmpty(appKey)) {
+            throw new QuestionException(ErrorCodeEnum.ERROR_404.getCode(), "appKey  is null");
+        }
+        //尝试从数据库中查询
+        AppInfo info = TokenService.getAppInfo(appKey);
+        if (ObjectUtil.isEmpty(info)) {
+            throw new QuestionException(ErrorCodeEnum.ERROR_404.getCode(), "appInfo  is null");
+        }
+        return getAccessToken(info.getAppSecret());
     }
 }

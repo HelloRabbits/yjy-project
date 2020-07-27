@@ -1,11 +1,11 @@
-package com.yjy.common;
+package com.yjy.common.enums;
 
 /**
  * @author zhangjl
  * @description 应用类型
  * @date 2020-05-26 21:56
  */
-public enum AppType {
+public enum AppTypeEnum {
     /**
      * h5微应用
      */
@@ -16,7 +16,7 @@ public enum AppType {
     ROBOT("ROBOT");
 
 
-    AppType(String code) {
+    AppTypeEnum(String code) {
         this.code = code;
     }
 

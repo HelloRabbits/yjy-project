@@ -2,7 +2,7 @@ package com.yjy.service.sdk;
 
 import com.yjy.bean.dto.dingding.SendMsgResultDto;
 import com.yjy.bean.qo.dingidng.SendWorkNoticeQo;
-import com.yjy.common.QuestionException;
+import com.yjy.common.exception.QuestionException;
 import com.dingtalk.api.request.OapiMessageSendToConversationRequest;
 
 /**

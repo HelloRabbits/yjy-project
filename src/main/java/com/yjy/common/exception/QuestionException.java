@@ -1,4 +1,4 @@
-package com.yjy.common;
+package com.yjy.common.exception;
 
 /**
  * @author zhangjl

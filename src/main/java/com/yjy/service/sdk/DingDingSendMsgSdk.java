@@ -3,8 +3,8 @@ package com.yjy.service.sdk;
 import cn.hutool.core.util.StrUtil;
 import com.yjy.bean.dto.dingding.SendMsgResultDto;
 import com.yjy.bean.qo.dingidng.SendWorkNoticeQo;
-import com.yjy.common.ErrorCode;
-import com.yjy.common.QuestionException;
+import com.yjy.common.enums.ErrorCodeEnum;
+import com.yjy.common.exception.QuestionException;
 import com.dingtalk.api.request.OapiMessageCorpconversationAsyncsendV2Request;
 import com.dingtalk.api.request.OapiMessageSendToConversationRequest;
 
@@ -36,7 +36,7 @@ public class DingDingSendMsgSdk extends AbstractDingDingSdk implements IDingDing
         request.setToAllUser(noticeQo.getToAllUser());
         request.setDeptIdList(noticeQo.getDeptIdList());
         if (StrUtil.isEmpty(noticeQo.getMsg())) {
-            throw new QuestionException(ErrorCode.ERROR_500.getCode(), "参数msg不能为空，请查看消息是否构建完成");
+            throw new QuestionException(ErrorCodeEnum.ERROR_500.getCode(), "参数msg不能为空，请查看消息是否构建完成");
         }
         request.setMsg(noticeQo.getMsg());
 

@@ -1,7 +1,7 @@
 package com.yjy.bean.qo.dingidng;
 
-import com.yjy.common.ErrorCode;
-import com.yjy.common.QuestionException;
+import com.yjy.common.enums.ErrorCodeEnum;
+import com.yjy.common.exception.QuestionException;
 import com.yjy.entity.AppInfo;
 import com.yjy.service.sdk.TokenService;
 import com.dingtalk.api.request.OapiMessageCorpconversationAsyncsendV2Request;
@@ -71,7 +71,7 @@ public class SendWorkNoticeQo {
 
     public SendWorkNoticeQo(Long agentId) throws QuestionException {
         if (agentId == null) {
-            throw new QuestionException(ErrorCode.ERROR_11001.getCode(), "agentId不能为空");
+            throw new QuestionException(ErrorCodeEnum.ERROR_11001.getCode(), "agentId不能为空");
         }
         this.agentId = agentId;
     }
@@ -79,7 +79,7 @@ public class SendWorkNoticeQo {
     public SendWorkNoticeQo(String appKey) throws QuestionException {
         AppInfo appInfo = TokenService.getAppInfo(appKey);
         if (appInfo == null) {
-            throw new QuestionException(ErrorCode.ERROR_404.getCode(), "应用信息为空，请先维护");
+            throw new QuestionException(ErrorCodeEnum.ERROR_404.getCode(), "应用信息为空，请先维护");
         }
         this.agentId = appInfo.getAgentId();
     }

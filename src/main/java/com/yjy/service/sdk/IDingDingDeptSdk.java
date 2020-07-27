@@ -2,9 +2,7 @@ package com.yjy.service.sdk;
 
 import com.yjy.bean.dto.dingding.DeptDetailInfo;
 import com.yjy.bean.dto.dingding.DeptListInfo;
-import com.yjy.common.QuestionException;
-
-import java.util.List;
+import com.yjy.common.exception.QuestionException;
 
 /**
  * @author zhangjl

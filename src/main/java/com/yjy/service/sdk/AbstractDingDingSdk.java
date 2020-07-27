@@ -1,10 +1,9 @@
 package com.yjy.service.sdk;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
 import com.yjy.bean.dto.dingding.DingDingBaseDto;
-import com.yjy.common.ErrorCode;
-import com.yjy.common.QuestionException;
+import com.yjy.common.enums.ErrorCodeEnum;
+import com.yjy.common.exception.QuestionException;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.DingTalkClient;
 import com.taobao.api.ApiException;
@@ -47,14 +46,15 @@ public abstract class AbstractDingDingSdk {
             response = client.execute(request, token);
         } catch (ApiException e) {
             log.error("调用钉钉接口异常,param:{},error:{}", JSON.toJSONString(request), e);
-            throw new QuestionException(ErrorCode.ERROR_10000.getCode(), "调用钉钉接口失败");
+            throw new QuestionException(ErrorCodeEnum.ERROR_10000.getCode(), "调用钉钉接口失败");
         }
-        T t = BeanUtil.toBean(response, tClass);
+        // 这里有可能会有转换问题，比如时间格式等 遇到在修改吧
+        T t = JSON.parseObject(JSON.toJSONString(response), tClass);
         if (t == null || t.getErrcode() != 0) {
             log.error("调用钉钉接口失败,param:{},response:{}", JSON.toJSONString(request), JSON.toJSONString(t));
-            throw new QuestionException(ErrorCode.ERROR_10000.getCode(), "调用钉钉接口失败");
+            throw new QuestionException(ErrorCodeEnum.ERROR_10000.getCode(), "调用钉钉接口失败");
         }
-        log.info("钉钉相应:result:{}", JSON.toJSONString(response));
+        log.info("钉钉响应:result:{}", JSON.toJSONString(response));
         return t;
     }
 

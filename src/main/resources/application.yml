@@ -3,6 +3,8 @@ server:
 
 
 spring:
+  application:
+    name: yjy-project
   profiles:
     active: @env@
   datasource:

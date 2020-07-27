@@ -3,10 +3,8 @@ package com.yjy.service.sdk;
 import com.dingtalk.api.request.OapiDepartmentListRequest;
 import com.yjy.bean.dto.dingding.DeptDetailInfo;
 import com.yjy.bean.dto.dingding.DeptListInfo;
-import com.yjy.common.QuestionException;
+import com.yjy.common.exception.QuestionException;
 import com.dingtalk.api.request.OapiDepartmentGetRequest;
-
-import java.util.List;
 
 /**
  * @author zhangjl
@@ -38,12 +36,14 @@ public class DingDingDeptSdk extends AbstractDingDingSdk implements IDingDingDep
     public DeptListInfo findDeptList(String parentId, String lang, Boolean fetchChild) throws QuestionException {
         OapiDepartmentListRequest request = new OapiDepartmentListRequest();
         request.setId(parentId);
+        //默认不遍历
+        request.setFetchChild(fetchChild == null ? Boolean.FALSE : fetchChild);
         request.setHttpMethod("GET");
         return executeBase(appKey, request, DeptListInfo.class, "https://oapi.dingtalk.com/department/list");
     }
 
     @Override
     public DeptListInfo findDeptList(String parentId) throws QuestionException {
-        return findDeptList(parentId, null, null);
+        return findDeptList(parentId, null, Boolean.TRUE);
     }
 }

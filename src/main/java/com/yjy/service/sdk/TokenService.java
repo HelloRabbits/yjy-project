@@ -2,9 +2,9 @@ package com.yjy.service.sdk;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.yjy.common.ErrorCode;
+import com.yjy.common.enums.ErrorCodeEnum;
 import com.yjy.common.LocalCache;
-import com.yjy.common.QuestionException;
+import com.yjy.common.exception.QuestionException;
 import com.yjy.entity.AppInfo;
 import com.yjy.service.IAppInfoService;
 import com.yjy.utils.SpringBeanFactoryUtil;
@@ -91,7 +91,7 @@ public class TokenService {
             //重试一次
             appInfo = APP_INFO.get(appKey);
             if (appInfo == null) {
-                throw new QuestionException(ErrorCode.ERROR_20001.getCode(), "appKey异常，没有匹配到");
+                throw new QuestionException(ErrorCodeEnum.ERROR_20001.getCode(), "appKey异常，没有匹配到");
             }
         }
         //先从本地获取

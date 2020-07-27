@@ -1,11 +1,11 @@
-package com.yjy.common;
+package com.yjy.common.enums;
 
 /**
  * @author zhangjl
  * @description 错误编码
  * @date 2020-05-26 20:57
  */
-public enum ErrorCode {
+public enum ErrorCodeEnum {
 
     //编码定义
     //编码长度 00000
@@ -47,7 +47,7 @@ public enum ErrorCode {
     private int code;
 
 
-    ErrorCode(int code) {
+    ErrorCodeEnum(int code) {
         this.code = code;
     }
 

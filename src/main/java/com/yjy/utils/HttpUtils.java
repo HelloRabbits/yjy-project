@@ -1,7 +1,7 @@
 package com.yjy.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.yjy.common.QuestionException;
+import com.yjy.common.exception.QuestionException;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 
