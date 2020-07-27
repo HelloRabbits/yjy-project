@@ -1,6 +1,6 @@
 package com.yjy.controller;
 
-import com.yjy.bean.qo.SendWorkNoticeQo;
+import com.yjy.bean.qo.dingidng.SendWorkNoticeQo;
 import com.yjy.common.QuestionException;
 import com.yjy.common.ResultResponse;
 import com.yjy.service.sdk.DingDingSdk;

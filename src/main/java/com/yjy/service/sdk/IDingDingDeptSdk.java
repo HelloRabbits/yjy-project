@@ -1,7 +1,10 @@
 package com.yjy.service.sdk;
 
-import com.yjy.bean.dto.DeptDetailInfo;
+import com.yjy.bean.dto.dingding.DeptDetailInfo;
+import com.yjy.bean.dto.dingding.DeptListInfo;
 import com.yjy.common.QuestionException;
+
+import java.util.List;
 
 /**
  * @author zhangjl
@@ -26,5 +29,27 @@ public interface IDingDingDeptSdk {
      * @return
      */
     DeptDetailInfo getDeptDetail(String deptId) throws QuestionException;
+
+
+    /**
+     * 获取部门列表
+     *
+     * @param parentId 上级id 不传默认1 根部门
+     * @param lang  语言 默认zh_CN，未来会支持en_US
+     * @param fetchChild 是否递归部门的全部子部门
+     * @return
+     * @throws QuestionException
+     */
+    DeptListInfo findDeptList(String parentId, String lang, Boolean fetchChild) throws QuestionException;
+
+
+    /**
+     * 获取部门列表
+     *
+     * @param parentId 上级id 不传默认1 根部门
+     * @return
+     * @throws QuestionException
+     */
+    DeptListInfo findDeptList(String parentId) throws QuestionException;
 
 }

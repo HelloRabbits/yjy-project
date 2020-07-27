@@ -1,4 +1,4 @@
-package com.yjy.bean.qo;
+package com.yjy.bean.qo.dingidng;
 
 import com.yjy.common.ErrorCode;
 import com.yjy.common.QuestionException;

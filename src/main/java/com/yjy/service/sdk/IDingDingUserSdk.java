@@ -1,6 +1,6 @@
 package com.yjy.service.sdk;
 
-import com.yjy.bean.dto.*;
+import com.yjy.bean.dto.dingding.*;
 import com.yjy.common.QuestionException;
 
 /**

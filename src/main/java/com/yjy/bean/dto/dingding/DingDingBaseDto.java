@@ -1,4 +1,4 @@
-package com.yjy.bean.dto;
+package com.yjy.bean.dto.dingding;
 
 import lombok.Data;
 import lombok.ToString;

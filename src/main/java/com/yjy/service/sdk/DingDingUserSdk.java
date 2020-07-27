@@ -1,13 +1,12 @@
 package com.yjy.service.sdk;
 
 import com.alibaba.fastjson.JSON;
-import com.yjy.bean.dto.*;
+import com.yjy.bean.dto.dingding.*;
 import com.yjy.common.ErrorCode;
 import com.dingtalk.api.DefaultDingTalkClient;
 import com.dingtalk.api.request.*;
 import com.yjy.common.QuestionException;
 import com.dingtalk.api.response.OapiGettokenResponse;
-import com.dingtalk.api.response.OapiUserGetByMobileResponse;
 import com.taobao.api.ApiException;
 import lombok.extern.slf4j.Slf4j;
 

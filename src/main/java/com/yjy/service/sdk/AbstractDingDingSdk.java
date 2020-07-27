@@ -2,7 +2,7 @@ package com.yjy.service.sdk;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
-import com.yjy.bean.dto.DingDingBaseDto;
+import com.yjy.bean.dto.dingding.DingDingBaseDto;
 import com.yjy.common.ErrorCode;
 import com.yjy.common.QuestionException;
 import com.dingtalk.api.DefaultDingTalkClient;
