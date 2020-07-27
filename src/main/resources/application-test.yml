@@ -1,0 +1,17 @@
+port: 8080
+
+db:
+  username: root
+  password: 123456
+  url: jdbc:h2:mysql://localhost:3306/question
+  driver:  com.mysql.cj.jdbc.Driver
+
+dingding:
+  appType: MINI_H5
+  corpId: ding4234cc0da7fdab4724f2f5cc6abecb85
+  appKey: dingejhdemgrglcpis9p
+  appSecret: S-ZCkmN41_PNFotU75_BHiiuyAOv8sgroLoz_M2CXhvxAWYXjLDWfuGTkaiCcfuw
+
+swagger:
+  enable: true
+  basePackage: com.yjy.controller

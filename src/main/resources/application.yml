@@ -1,0 +1,29 @@
+server:
+  port: ${port}
+
+
+spring:
+  profiles:
+    active: @env@
+  datasource:
+    driver-class-name: ${db.driver}
+    #schema: classpath:db/schema-h2.sql
+    #data: classpath:db/data-h2.sql
+    username: ${db.username}
+    password: ${db.password}
+    url: ${db.url}?characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&serverTimezone=UTC
+mybatis-plus:
+  configuration:
+    cache-enabled: false
+
+dingding:
+  #开放平台首页 公司id
+  appType: ${dingding.appType}
+  corpId: ${dingding.corpId}
+  appKey: ${dingding.appKey}
+  appSecret: ${dingding.appSecret}
+
+
+swagger:
+  enable: ${swagger.enable}
+  basePackage: ${swagger.basePackage}
