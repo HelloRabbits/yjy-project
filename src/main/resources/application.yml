@@ -17,6 +17,13 @@ spring:
 mybatis-plus:
   configuration:
     cache-enabled: false
+  redis:
+    # host: 127.0.0.1
+    #    host: 106.54.22.115
+    #    port: 6379
+    #  timeout: 30
+    redisson:
+      config: classpath:redisson.yml
 
 dingding:
   #开放平台首页 公司id

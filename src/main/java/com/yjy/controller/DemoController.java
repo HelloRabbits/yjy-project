@@ -6,6 +6,7 @@ import com.yjy.bean.dto.dingding.DeptListInfo;
 import com.yjy.bean.qo.dingidng.SendWorkNoticeQo;
 import com.yjy.common.exception.QuestionException;
 import com.yjy.common.Response;
+import com.yjy.service.base.RedisService;
 import com.yjy.service.sdk.DingDingSdk;
 import com.yjy.service.sdk.TokenService;
 import io.swagger.annotations.Api;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -33,6 +36,24 @@ public class DemoController {
     @Resource
     private DingDingInitUserApi dingDingInitUserApi;
 
+    @Resource
+    private RedisService redisService;
+
+    @GetMapping("redis/addStr")
+    public void addStr(String key, String value){
+        redisService.strAddExpire(key, value, 1, TimeUnit.MINUTES);
+    }
+
+    @GetMapping("redis/getObj")
+    public void getObj(String key, String value){
+    }
+
+    @GetMapping("redis/addObj")
+    public void addObj(String key){
+        HashMap<String, Object> hashMap = new HashMap<>(10);
+        hashMap.put("1", "2");
+        redisService.strAddExpire(key, JSON.toJSONString(hashMap), 1, TimeUnit.MINUTES);
+    }
 
     @ApiOperation(value = "获取token")
     @GetMapping("getToken")
