@@ -3,7 +3,7 @@ port: 8089
 db:
   username: root
   password: 123456
-  url: jdbc:p6spy:mysql://localhost:3306/question
+  url: jdbc:p6spy:mysql://localhost:3306/yjy
   driver:  com.p6spy.engine.spy.P6SpyDriver
 
 dingding:

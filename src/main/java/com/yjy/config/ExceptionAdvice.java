@@ -6,6 +6,8 @@ import com.yjy.common.Response;
 import com.taobao.api.ApiException;
 import com.yjy.common.exception.UnPermissionException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -34,6 +36,8 @@ public class ExceptionAdvice {
             return Response.fail_500("请求钉钉接口异常");
         } else if (e instanceof UnPermissionException){
             return Response.fail(ErrorCodeEnum.ERROR_403.getCode(), "没有权限");
+        } else if(e instanceof UnknownAccountException){
+            return Response.fail(ErrorCodeEnum.ERROR_404.getCode(), e.getMessage());
         }
         else {
             log.error("系统异常:{}", e);

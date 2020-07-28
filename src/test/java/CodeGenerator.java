@@ -21,7 +21,7 @@ public class CodeGenerator {
     private static final String dbUlr = "localhost:3306";
     private static final String dbUser = "root";
     private static final String dbPassword = "123456";
-    private static final String dbName = "question";
+    private static final String dbName = "yjy";
 
 
     /**

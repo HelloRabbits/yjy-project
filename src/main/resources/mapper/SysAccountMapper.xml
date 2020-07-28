@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yjy.mapper.SysAccountMapper">
+
+
+    <select id="queryUserPermissionList" resultType="com.yjy.bean.dto.account.SysUserPermissionDto">
+        select sa.id_account idAccount,
+        sa.state,
+        sa.account,
+        sa.password,
+        sr.role_cd roleCd,
+        sp.permission_cd permissionCd
+        from sys_account sa
+        left join sys_account_role sar on sa.id_account = sar.id_account
+        left join sys_role sr on sr.id_role = sar.id_role
+        left join sys_role_permission srp on sar.id_role = srp.id_role
+        left join sys_permission sp on srp.id_permission = sp.id_permission
+        where sr.state = 1
+        and sp.state = 1
+        <if test="idAccount != ''and idAccount != null">
+            and sa.id_account = #{idAccount}
+        </if>
+
+    </select>
+</mapper>

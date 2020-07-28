@@ -7,11 +7,10 @@ import org.apache.shiro.cache.CacheException;
 
 import java.util.Collection;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhangjl
- * @description  自定义shiro缓存 筒骨redis实现
+ * @description  自定义shiro缓存 通过redis实现
  * @date 2020-07-28 12:05
  */
 public class ShiroCache<K, V> implements Cache<K, V> {
@@ -29,12 +28,12 @@ public class ShiroCache<K, V> implements Cache<K, V> {
 
     @Override
     public V get(K k) throws CacheException {
-        return null;
+        return (V)RedisUtils.getService().objGet(getKey(k));
     }
 
     @Override
     public V put(K k, V v) throws CacheException {
-        return null;
+        return v;
     }
 
     @Override

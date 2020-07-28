@@ -62,7 +62,7 @@ public class ShiroConfiguration {
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(userRealm());
-        //自定义redis缓存
+        //自定义redis缓存 若不开启则每次都会进入realm的权限和用户信息的校验
         securityManager.setCacheManager(cacheManager());
         return securityManager;
     }
@@ -73,7 +73,8 @@ public class ShiroConfiguration {
      */
     @Bean
     public UserRealm userRealm() {
-        return new UserRealm();
+        UserRealm userRealm = new UserRealm();
+        return userRealm;
     }
 
     /**

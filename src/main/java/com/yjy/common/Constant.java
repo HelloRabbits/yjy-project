@@ -7,6 +7,20 @@ package com.yjy.common;
  */
 public interface Constant {
 
+    /**
+     * session中存放的用户信息
+     */
+    public final static String SESSION_USER_INFO = "session_user_info";
+
     String PREFIX_SHIRO_CACHE = "shiro:cache:account";
 
+    /**
+     * redis 缓存个人信息
+     */
+    String REDIS_ACCOUNT_INFO = "redis:account:permission:";
+
+    /**
+     * redis 缓存个人权限
+     */
+    String REDIS_PERMISSION_INFO = "redis:account:permission:";
 }

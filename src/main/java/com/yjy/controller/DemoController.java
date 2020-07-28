@@ -6,9 +6,11 @@ import com.yjy.bean.dto.dingding.DeptListInfo;
 import com.yjy.bean.qo.dingidng.SendWorkNoticeQo;
 import com.yjy.common.exception.QuestionException;
 import com.yjy.common.Response;
+import com.yjy.config.shiro.UserRealm;
 import com.yjy.service.base.RedisService;
 import com.yjy.service.sdk.DingDingSdk;
 import com.yjy.service.sdk.TokenService;
+import com.yjy.utils.SpringBeanFactoryUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -45,14 +47,16 @@ public class DemoController {
     }
 
     @GetMapping("redis/getObj")
-    public void getObj(String key, String value){
+    public void getObj(String key){
+        HashMap<String, Object> o = (HashMap<String, Object>)redisService.objGet(key);
+        System.out.println();
     }
 
     @GetMapping("redis/addObj")
     public void addObj(String key){
         HashMap<String, Object> hashMap = new HashMap<>(10);
         hashMap.put("1", "2");
-        redisService.strAddExpire(key, JSON.toJSONString(hashMap), 1, TimeUnit.MINUTES);
+        redisService.objAddExpire(key, hashMap, 1, TimeUnit.MINUTES);
     }
 
     @ApiOperation(value = "获取token")
@@ -92,5 +96,9 @@ public class DemoController {
     @GetMapping("userSdkToken")
     public String userSdkToken(String appKey) throws QuestionException {
         return DingDingSdk.getDingDingUserSdk(appKey).getAccessToken();
+    }
+
+    public static void main(String[] args) {
+
     }
 }
