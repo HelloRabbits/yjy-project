@@ -73,7 +73,9 @@ public class RedisService {
         return redisTemplate.delete(key);
     }
     // ---------------------------------------------- list  ----------------------------------------------
-
+    // ---------------------------------------------- hash -----------------------------------------------
+    public void hGet(String key){
+    }
     // ---------------------------------------------- set  ----------------------------------------------
 
     /**
@@ -159,16 +161,6 @@ public class RedisService {
      */
     public void objAddExpire(String key, Object value, long time, TimeUnit unit) {
         opsForValue().set(key, value, time, unit);
-    }
-
-    /**
-     * 删除
-     *
-     * @param key key
-     * @return
-     */
-    public Boolean del(String key) {
-        return redisTemplate.delete(key);
     }
 
     /**

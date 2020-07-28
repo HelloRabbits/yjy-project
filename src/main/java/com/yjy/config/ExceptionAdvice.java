@@ -7,6 +7,7 @@ import com.taobao.api.ApiException;
 import com.yjy.common.exception.UnPermissionException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,6 +39,8 @@ public class ExceptionAdvice {
             return Response.fail(ErrorCodeEnum.ERROR_403.getCode(), "没有权限");
         } else if(e instanceof UnknownAccountException){
             return Response.fail(ErrorCodeEnum.ERROR_404.getCode(), e.getMessage());
+        } else if (e instanceof LockedAccountException) {
+            return Response.fail(ErrorCodeEnum.ERROR_30001.getCode(), "账号已锁定");
         }
         else {
             log.error("系统异常:{}", e);

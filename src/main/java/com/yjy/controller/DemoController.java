@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.yjy.api.dingding.DingDingInitUserApi;
 import com.yjy.bean.dto.dingding.DeptListInfo;
 import com.yjy.bean.qo.dingidng.SendWorkNoticeQo;
+import com.yjy.common.Constant;
 import com.yjy.common.exception.QuestionException;
 import com.yjy.common.Response;
 import com.yjy.config.shiro.UserRealm;
@@ -15,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,6 +50,10 @@ public class DemoController {
 
     @GetMapping("redis/getObj")
     public void getObj(String key){
+        Object attribute = SecurityUtils.getSubject().getSession().getAttribute(Constant.SESSION_USER_INFO);
+        System.out.println(JSON.toJSONString(attribute));
+
+
         HashMap<String, Object> o = (HashMap<String, Object>)redisService.objGet(key);
         System.out.println();
     }

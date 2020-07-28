@@ -68,6 +68,9 @@ public class UserRealm extends AuthorizingRealm {
         if (!password.equals(account.getPassword())) {
             throw new UnknownAccountException("账号或密码错误");
         }
+        if (account.getState() != 1) {
+            throw new LockedAccountException();
+        }
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(
                 username,
                 password,

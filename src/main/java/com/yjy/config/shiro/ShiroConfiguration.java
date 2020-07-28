@@ -74,6 +74,7 @@ public class ShiroConfiguration {
     @Bean
     public UserRealm userRealm() {
         UserRealm userRealm = new UserRealm();
+        userRealm.setCachingEnabled(true);
         return userRealm;
     }
 

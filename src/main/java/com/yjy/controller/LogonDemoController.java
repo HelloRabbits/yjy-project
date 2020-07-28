@@ -28,9 +28,12 @@ public class LogonDemoController {
      */
     @GetMapping("/login")
     public Response<String> login(String account, String password) {
-        Subject currentUser = SecurityUtils.getSubject();
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated()) {
+            return Response.success("login success");
+        }
         UsernamePasswordToken token = new UsernamePasswordToken(account, password);
-        currentUser.login(token);
+        subject.login(token);
         return Response.success("login success");
     }
 
