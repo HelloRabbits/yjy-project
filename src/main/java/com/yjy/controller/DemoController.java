@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +51,7 @@ public class DemoController {
         redisService.strAddExpire(key, value, 1, TimeUnit.MINUTES);
     }
 
+    @RequiresPermissions(value = "user")
     @GetMapping("redis/getObj")
     public void getObj(String key){
         Object attribute = SecurityUtils.getSubject().getSession().getAttribute(Constant.SESSION_USER_INFO);

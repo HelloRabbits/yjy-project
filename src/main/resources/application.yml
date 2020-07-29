@@ -44,6 +44,8 @@ redis:
       account: 30
       #token缓存时间 单位天
       token: 30
+      #权限信息缓存时长 单位天
+      permission: 30
 
 
 # AES密码加密私钥(Base64加密)

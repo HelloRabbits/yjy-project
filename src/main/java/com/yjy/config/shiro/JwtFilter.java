@@ -139,14 +139,14 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
                 token = redisCacheInfoService.addToken(account);
             }
         }
-        AccountInfoCache accountInfo = accountPermissionApi.getCacheInfoWithAccount(account);
+        AccountInfoCache accountInfo = accountPermissionApi.getAccountInfoWithAccount(account);
         if (ObjectUtil.isEmpty(account)) {
             throw new UnknownAccountException("账号信息异常");
         }
         //设置线程变量, 单次请求有效
         BeanUtil.copyProperties(accountInfo, loginAccountInfo);
         httpResponse.setHeader("token", token);
-        return new JwtShiroToken(token, accountInfo.getAccount(), accountInfo.getPassword());
+        return new JwtShiroToken(accountInfo.getAccount(), accountInfo.getPassword(), token);
     }
 
 

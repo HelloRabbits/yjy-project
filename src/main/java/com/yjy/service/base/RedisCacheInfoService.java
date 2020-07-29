@@ -1,6 +1,7 @@
 package com.yjy.service.base;
 
 import com.yjy.bean.base.AccountInfoCache;
+import com.yjy.bean.base.PermissionCache;
 import com.yjy.common.Constant;
 import com.yjy.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,9 @@ public class RedisCacheInfoService {
 
     @Value("${redis.cache.time.account}")
     private Long accountCacheTime;
+
+    @Value("${redis.cache.time.permission}")
+    private Long permissionCacheTime;
 
     @Value("${redis.cache.time.token}")
     private Long tokenCacheTime;
@@ -69,7 +73,36 @@ public class RedisCacheInfoService {
         return redisService.expire(Constant.REDIS_ACCOUNT_INFO + account, accountCacheTime, TimeUnit.DAYS);
     }
 
-    // TODO: 2020/7/29缓存权限的信息
+
+    /**
+     * 缓存权限
+     *
+     * @param cache 权限内容
+     * @return
+     */
+    public String addPermissionCache(PermissionCache cache){
+        String key = Constant.REDIS_PERMISSION_INFO + cache.getAccount();
+        redisService.objAddExpire(key, cache, permissionCacheTime, TimeUnit.DAYS);
+        return key;
+    }
+
+
+    /**
+     * 从缓存中获取账号的基本信息
+     *
+     * @param account 账号
+     * @return
+     */
+    public PermissionCache getPermissionCache(String account) {
+        //优先从redis中获取
+        Boolean hasKey = redisService.hasKey(Constant.REDIS_PERMISSION_INFO + account);
+        if (hasKey) {
+            return (PermissionCache) redisService.objGet(account);
+        }
+        return null;
+    }
+
+
 
     /**
      * 缓存token的信息

@@ -19,10 +19,10 @@ public interface ISysAccountService extends IService<SysAccount> {
     /**
      * 查询当前用户的权限集合
      *
-     * @param idAccount 用户id
+     * @param account 账号
      * @return SysUserPermissionDto
      */
-    List<SysUserPermissionDto> queryUserPermissionList(String idAccount);
+    List<SysUserPermissionDto> queryUserPermissionList(String account);
 
 
     /**

@@ -17,8 +17,8 @@
         left join sys_permission sp on srp.id_permission = sp.id_permission
         where sr.state = 1
         and sp.state = 1
-        <if test="idAccount != ''and idAccount != null">
-            and sa.id_account = #{idAccount}
+        <if test="account != ''and account != null">
+            and sa.account = #{account}
         </if>
 
     </select>

@@ -27,11 +27,11 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAcco
     private SysAccountMapper sysAccountMapper;
 
     @Override
-    public List<SysUserPermissionDto> queryUserPermissionList(String idAccount) {
-        if (StrUtil.isEmpty(idAccount)) {
+    public List<SysUserPermissionDto> queryUserPermissionList(String account) {
+        if (StrUtil.isEmpty(account)) {
             return null;
         }
-        return sysAccountMapper.queryUserPermissionList(idAccount);
+        return sysAccountMapper.queryUserPermissionList(account);
     }
 
     @Override

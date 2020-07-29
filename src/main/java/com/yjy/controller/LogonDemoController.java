@@ -82,7 +82,7 @@ public class LogonDemoController {
             throw new LockedAccountException("账号信息已被锁定");
         }
         //从redis中获取人员信息，没有则初始化到redis中，只有账号信息
-        accountPermissionApi.getCacheInfoWithAccount(account);
+        accountPermissionApi.getAccountInfoWithAccount(account);
         //校验token开始
         try {
             //尝试从redis中获取token信息

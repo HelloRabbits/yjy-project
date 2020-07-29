@@ -1,26 +1,24 @@
 package com.yjy.api.account;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.yjy.bean.base.AccountInfoCache;
-import com.yjy.common.Constant;
-import com.yjy.common.exception.JwtException;
+import com.yjy.bean.base.PermissionCache;
+import com.yjy.bean.dto.account.SysUserPermissionDto;
 import com.yjy.common.exception.QuestionException;
 import com.yjy.entity.SysAccount;
 import com.yjy.entity.SysPerson;
 import com.yjy.entity.SysPersonDep;
 import com.yjy.service.ISysAccountService;
-import com.yjy.service.ISysPermissionService;
 import com.yjy.service.ISysPersonDepService;
 import com.yjy.service.ISysPersonService;
 import com.yjy.service.base.RedisCacheInfoService;
-import com.yjy.service.base.RedisService;
-import com.yjy.utils.JwtUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -38,9 +36,6 @@ public class AccountPermissionApi {
     private ISysAccountService sysAccountService;
 
     @Resource
-    private ISysPermissionService sysPermissionService;
-
-    @Resource
     private ISysPersonService sysPersonService;
 
     @Resource
@@ -53,7 +48,7 @@ public class AccountPermissionApi {
      * @param account 账号
      * @return
      */
-    public AccountInfoCache getCacheInfoWithAccount(String account) {
+    public AccountInfoCache getAccountInfoWithAccount(String account) {
         //优先从redis中获取
         AccountInfoCache cache = cacheInfoService.getAccountInfoCache(account);
         if (null == cache) {
@@ -76,4 +71,30 @@ public class AccountPermissionApi {
         }
         return cache;
     }
+
+    /**
+     * 查询用于权限信息
+     * 优先从缓存中获取
+     *
+     * @param account 账号
+     * @return PermissionCache
+     */
+    public PermissionCache getPermissionsWithAccount(String account) {
+        PermissionCache cache = cacheInfoService.getPermissionCache(account);
+        if (ObjectUtil.isEmpty(cache)) {
+            cache = new PermissionCache();
+            //查询角色和权限
+            List<SysUserPermissionDto> permissionDtos = sysAccountService.queryUserPermissionList(account);
+            if (CollUtil.isEmpty(permissionDtos)) {
+                return cache;
+            }
+            //初始化角色
+            cache.setRoles(permissionDtos.stream().map(SysUserPermissionDto::getRoleCd).collect(Collectors.toSet()));
+            //初始化权限
+            cache.setPermissions(permissionDtos.stream().map(SysUserPermissionDto::getPermissionCd).collect(Collectors.toSet()));
+        }
+        cache.setAccount(account);
+        return cache;
+    }
+
 }

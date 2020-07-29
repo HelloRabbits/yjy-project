@@ -74,7 +74,9 @@ public class ShiroConfiguration {
         subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
         securityManager.setSubjectDAO(subjectDAO);
         //自定义redis缓存 若不开启则每次都会进入realm的权限和用户信息的校验
-        securityManager.setCacheManager(cacheManager());
+        //关闭缓存每次都会进入realm校验用户信息和权限
+        // TODO: 2020/7/29 需要自定义redis缓存，在权限变更的时候能及时清理掉
+        //securityManager.setCacheManager(cacheManager());
         return securityManager;
     }
 
