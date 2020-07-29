@@ -3,6 +3,8 @@ package com.yjy.config.shiro;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.MemoryConstrainedCacheManager;
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -26,6 +28,7 @@ import java.util.Map;
 @Configuration
 public class ShiroConfiguration {
 
+
     /**
      * Shiro的Web过滤器Factory 命名:shiroFilter
      */
@@ -36,7 +39,8 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         Map<String, Filter> filterMap = new LinkedHashMap<>();
         //重写authc的过滤器， 每一个域都有一个对应的已经实现好的默认过滤器，都可以重写
-        filterMap.put("authc", ajaxPermissionsAuthorizationFilter());
+        //filterMap.put("authc", ajaxPermissionsAuthorizationFilter());
+        filterMap.put("jwt", jwtFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
         /*定义shiro过滤链  Map结构
          * Map中key(xml中是指value值)的第一个'/'代表的路径是相对于HttpServletRequest.getContextPath()的值来的
@@ -50,7 +54,8 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/auth/**", "anon");
         filterChainDefinitionMap.put("/error", "anon");
-        filterChainDefinitionMap.put("/**", "authc");
+       // filterChainDefinitionMap.put("/**", "authc");
+        filterChainDefinitionMap.put("/**", "jwt");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -61,22 +66,24 @@ public class ShiroConfiguration {
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(userRealm());
+        securityManager.setRealm(jwtRealm());
+        // 关闭Shiro自带的session
+        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
+        securityManager.setSubjectDAO(subjectDAO);
         //自定义redis缓存 若不开启则每次都会进入realm的权限和用户信息的校验
         securityManager.setCacheManager(cacheManager());
         return securityManager;
     }
 
 
-    /**
-     * Shiro Realm 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的
-     */
     @Bean
-    public UserRealm userRealm() {
-        UserRealm userRealm = new UserRealm();
-        userRealm.setCachingEnabled(true);
-        return userRealm;
+    public JwtRealm jwtRealm(){
+        return new JwtRealm();
     }
+
 
     /**
      * 凭证匹配器
@@ -132,17 +139,28 @@ public class ShiroConfiguration {
         return authorizationAttributeSourceAdvisor;
     }
 
+    /**
+     * 注意：
+     * 这个必须配置，如果将filter注入bean容器，则会被spring视为全局的filter，不再有shiroFilter控制
+     * 任何请求必定执行。
+     * 这个配置可以让filter脱离spring的控制
+     *
+     * @param filter
+     * @return
+     */
     @Bean
-    public FilterRegistrationBean<AjaxPermissionsAuthorizationFilter> registration(AjaxPermissionsAuthorizationFilter filter) {
-        FilterRegistrationBean<AjaxPermissionsAuthorizationFilter> registration = new FilterRegistrationBean<>(filter);
+    public FilterRegistrationBean<JwtFilter> registration(JwtFilter filter) {
+        FilterRegistrationBean<JwtFilter> registration = new FilterRegistrationBean<>(filter);
         registration.setEnabled(false);
         return registration;
     }
 
+
     @Bean
-    public AjaxPermissionsAuthorizationFilter ajaxPermissionsAuthorizationFilter(){
-        return new AjaxPermissionsAuthorizationFilter();
+    public JwtFilter jwtFilter(){
+        return new JwtFilter();
     }
+
 
 
     @Bean

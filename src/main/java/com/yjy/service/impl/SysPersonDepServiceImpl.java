@@ -1,5 +1,6 @@
 package com.yjy.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yjy.entity.SysPersonDep;
 import com.yjy.mapper.SysPersonDepMapper;
 import com.yjy.service.ISysPersonDepService;
@@ -17,4 +18,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysPersonDepServiceImpl extends ServiceImpl<SysPersonDepMapper, SysPersonDep> implements ISysPersonDepService {
 
+    @Override
+    public SysPersonDep getWithIdPerson(String idPerson) {
+        return getOne(Wrappers.lambdaQuery(SysPersonDep.class).eq(SysPersonDep::getIdPerson, idPerson));
+    }
 }

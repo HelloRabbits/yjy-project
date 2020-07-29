@@ -13,4 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysPersonService extends IService<SysPerson> {
 
+    /**
+     * 根据账号id查询关联的用户信息
+     *
+     * @param idAccount  账号id
+     * @return
+     */
+    SysPerson getWithIdAccount(String idAccount);
 }

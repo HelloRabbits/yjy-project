@@ -17,10 +17,25 @@ public interface Constant {
     /**
      * redis 缓存个人信息
      */
-    String REDIS_ACCOUNT_INFO = "redis:account:permission:";
+    String REDIS_PERMISSION_INFO = "redis:account:permission:";
 
     /**
      * redis 缓存个人权限
      */
-    String REDIS_PERMISSION_INFO = "redis:account:permission:";
+    String REDIS_ACCOUNT_INFO = "redis:account:info:";
+
+    /**
+     * redis缓存 token信息
+     */
+    String REDIS_JWT_TOKEN = "redis:jwt:token:";
+
+
+    /**
+     * JWT-account:
+     */
+    String JWT_ACCOUNT = "account";
+    /**
+     * jwt-expire_time
+     */
+    String JWT_EXPIRE_TIME = "expireTime";
 }

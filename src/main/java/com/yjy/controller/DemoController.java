@@ -2,16 +2,15 @@ package com.yjy.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.yjy.api.dingding.DingDingInitUserApi;
+import com.yjy.bean.base.LoginAccountInfo;
 import com.yjy.bean.dto.dingding.DeptListInfo;
 import com.yjy.bean.qo.dingidng.SendWorkNoticeQo;
 import com.yjy.common.Constant;
 import com.yjy.common.exception.QuestionException;
 import com.yjy.common.Response;
-import com.yjy.config.shiro.UserRealm;
 import com.yjy.service.base.RedisService;
 import com.yjy.service.sdk.DingDingSdk;
 import com.yjy.service.sdk.TokenService;
-import com.yjy.utils.SpringBeanFactoryUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -43,6 +42,9 @@ public class DemoController {
     @Resource
     private RedisService redisService;
 
+    @Resource
+    private LoginAccountInfo loginAccountInfo;
+
     @GetMapping("redis/addStr")
     public void addStr(String key, String value){
         redisService.strAddExpire(key, value, 1, TimeUnit.MINUTES);
@@ -52,10 +54,8 @@ public class DemoController {
     public void getObj(String key){
         Object attribute = SecurityUtils.getSubject().getSession().getAttribute(Constant.SESSION_USER_INFO);
         System.out.println(JSON.toJSONString(attribute));
-
-
-        HashMap<String, Object> o = (HashMap<String, Object>)redisService.objGet(key);
-        System.out.println();
+        System.out.println(JSON.toJSONString(loginAccountInfo));
+        throw new QuestionException("yichang");
     }
 
     @GetMapping("redis/addObj")

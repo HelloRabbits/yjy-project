@@ -68,14 +68,43 @@ public class RedisService {
     // ---------------------------------------------- 通用  ----------------------------------------------
     //添加过期时间
     //判断key是否存在
-    //删除key
+
+    /**
+     * 删除key
+     *
+     * @param key key
+     * @return
+     */
     public Boolean delKey(String key) {
         return redisTemplate.delete(key);
     }
+
+    /**
+     * 判断key是否存在
+     *
+     * @param key key
+     * @return Boolean
+     */
+    public Boolean hasKey(String key) {
+        Boolean hasKey = redisTemplate.hasKey(key);
+        return hasKey == null ? false : hasKey;
+    }
+
+    /**
+     * 设置key的过期时间
+     *
+     * @param key key
+     * @param time time
+     * @param unit 单位
+     * @return Boolean
+     */
+    public Boolean expire(String key, long time, TimeUnit unit) {
+        Boolean expire = redisTemplate.expire(key, time, unit);
+        return expire == null ? false : expire;
+    }
     // ---------------------------------------------- list  ----------------------------------------------
     // ---------------------------------------------- hash -----------------------------------------------
-    public void hGet(String key){
-    }
+
     // ---------------------------------------------- set  ----------------------------------------------
 
     /**
@@ -211,5 +240,9 @@ public class RedisService {
      */
     public Boolean setBit(String key, long value, boolean var4) {
         return redisTemplate.opsForValue().setBit(key, value, var4);
+    }
+
+    public RedisTemplate<String, Object> getRedisTemplate() {
+        return redisTemplate;
     }
 }

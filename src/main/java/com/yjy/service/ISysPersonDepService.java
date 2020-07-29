@@ -13,4 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ISysPersonDepService extends IService<SysPersonDep> {
 
+    /**
+     * 查询人员所属科室部门信息
+     *
+     * @param idPerson 人员主键
+     * @return
+     */
+    SysPersonDep getWithIdPerson(String idPerson);
 }

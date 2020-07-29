@@ -5,7 +5,7 @@ package com.yjy.common.exception;
  * @description 统一异常类
  * @date 2020-05-26 12:11
  */
-public class QuestionException extends Exception{
+public class QuestionException extends RuntimeException{
 
     private int code;
 
