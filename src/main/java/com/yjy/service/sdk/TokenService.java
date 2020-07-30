@@ -2,17 +2,19 @@ package com.yjy.service.sdk;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.yjy.common.Constant;
 import com.yjy.common.enums.ErrorCodeEnum;
-import com.yjy.common.LocalCache;
 import com.yjy.common.exception.QuestionException;
 import com.yjy.entity.AppInfo;
 import com.yjy.service.IAppInfoService;
+import com.yjy.utils.RedisUtils;
 import com.yjy.utils.SpringBeanFactoryUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -23,7 +25,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @Slf4j
 public class TokenService {
 
-    private IAppInfoService appInfoService;
+    private final IAppInfoService appInfoService;
 
     public TokenService(IAppInfoService appInfoService) {
         this.appInfoService = appInfoService;
@@ -38,10 +40,6 @@ public class TokenService {
      * 初始化时存放appInfo，支持更新
      */
     private final static HashMap<String, AppInfo> APP_INFO = new HashMap<>(16);
-    /**
-     * 缓存的key
-     */
-    private final static String CACHE_KEY = "DingDing_AccessToken_";
 
     @PostConstruct
     private void init() {
@@ -94,20 +92,20 @@ public class TokenService {
                 throw new QuestionException(ErrorCodeEnum.ERROR_20001.getCode(), "appKey异常，没有匹配到");
             }
         }
-        //先从本地获取
-        String token = LocalCache.getToken(CACHE_KEY + appKey);
+        //先从缓存获取
+        String token = RedisUtils.getService().strGet(Constant.DINGDING_REDIS_TOKEN + appKey);
         if (StrUtil.isEmpty(token)) {
             //加锁不重复获取
             tokenLock.lock();
             //再次获取，可能其他线程已经执行过了
-            token = LocalCache.getToken(CACHE_KEY + appKey);
+            token = RedisUtils.getService().strGet(Constant.DINGDING_REDIS_TOKEN + appKey);
             if (token != null) {
                 tokenLock.unlock();
                 return token;
             }
             //token在有效期内重复获取结果相同,且自动续期
             token = DingDingSdk.getDingDingUserSdk(appKey).getAccessToken(appInfo.getAppSecret());
-            LocalCache.putToken(CACHE_KEY + appKey, token);
+            RedisUtils.getService().strAddExpire(Constant.DINGDING_REDIS_TOKEN + appKey, token, 7100L, TimeUnit.SECONDS);
             tokenLock.unlock();
         }
         log.info("thread:{}, token:{}", Thread.currentThread().getName(), token);

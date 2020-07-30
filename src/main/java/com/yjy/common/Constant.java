@@ -38,4 +38,13 @@ public interface Constant {
      * jwt-expire_time
      */
     String JWT_EXPIRE_TIME = "expireTime";
+
+    /**
+     * 钉钉token
+     */
+    String DINGDING_REDIS_TOKEN = "other:token:dingding:";
+    /**
+     * 微信小程序token
+     */
+    String WECHAT_MA_REDIS_TOKEN = "other:token:wx:ma:";
 }
