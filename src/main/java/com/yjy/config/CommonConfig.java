@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020-05-26 20:25
  */
 @Configuration
-public class QuestionConfig {
+public class CommonConfig {
 
     @Bean
     public DingDingProperties dingProperties(){

@@ -22,7 +22,7 @@ public class SysPersonDep implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id_person_dep", type = IdType.AUTO)
+    @TableId(value = "id_person_dep", type = IdType.ASSIGN_UUID)
     private String idPersonDep;
 
     /**

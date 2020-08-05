@@ -22,7 +22,7 @@ public class SysDep implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id_dep", type = IdType.AUTO)
+    @TableId(value = "id_dep", type = IdType.ASSIGN_UUID)
     private String idDep;
 
     /**
@@ -51,7 +51,7 @@ public class SysDep implements Serializable {
     private String remark;
 
     /**
-     * 状态 1正常 0删除
+     * 状态 1正常 0停用
      */
     private Integer state;
 

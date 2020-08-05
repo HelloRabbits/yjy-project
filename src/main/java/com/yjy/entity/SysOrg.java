@@ -22,7 +22,7 @@ public class SysOrg implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id_org", type = IdType.AUTO)
+    @TableId(value = "id_org", type = IdType.ASSIGN_UUID )
     private String idOrg;
 
     /**
@@ -41,7 +41,7 @@ public class SysOrg implements Serializable {
     private String reamark;
 
     /**
-     * 状态 1正常 0删除
+     * 状态 1正常 0停用
      */
     private Integer state;
 

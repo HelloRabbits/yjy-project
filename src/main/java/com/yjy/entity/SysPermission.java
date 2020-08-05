@@ -22,7 +22,7 @@ public class SysPermission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id_permission", type = IdType.AUTO)
+    @TableId(value = "id_permission", type = IdType.ASSIGN_UUID)
     private String idPermission;
 
     /**

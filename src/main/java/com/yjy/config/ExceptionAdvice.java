@@ -28,7 +28,7 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(value={Exception.class})
     public Response<String> handleException(Exception e){
-        log.error("请求钉钉接口异常：{}", e);
+        log.error("接口异常：{}", e);
         //自定义抛出的异常
         if (e instanceof QuestionException) {
           return Response.fail(((QuestionException) e).getCode(), e.getMessage());

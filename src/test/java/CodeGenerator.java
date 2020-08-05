@@ -1,4 +1,5 @@
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -54,6 +55,7 @@ public class CodeGenerator {
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("zhangjl");
         gc.setOpen(false);
+        gc.setIdType(IdType.ASSIGN_UUID);
         //gc.setFileOverride(true);
         // gc.setSwagger2(true); 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);

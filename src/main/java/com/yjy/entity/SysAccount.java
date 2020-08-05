@@ -22,7 +22,7 @@ public class SysAccount implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id_account", type = IdType.AUTO)
+    @TableId(value = "id_account", type = IdType.ASSIGN_UUID)
     private String idAccount;
 
     /**

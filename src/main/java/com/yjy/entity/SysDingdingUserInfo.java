@@ -22,7 +22,7 @@ public class SysDingdingUserInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id_d_user", type = IdType.AUTO)
+    @TableId(value = "id_d_user", type = IdType.ASSIGN_UUID)
     private String idDUser;
 
     /**

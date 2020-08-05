@@ -165,7 +165,6 @@ public class ShiroConfiguration {
     }
 
 
-
     @Bean
     protected CacheManager cacheManager() {
         return new MemoryConstrainedCacheManager();

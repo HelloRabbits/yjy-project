@@ -94,7 +94,7 @@ public class LogonDemoController {
                 //jwt中account信息
                 String jwtAccount = JwtUtil.getClaim(token, Constant.JWT_ACCOUNT);
                 //这种概率很低，如果程序错误导致存入的redis的token信息有误
-                if (StrUtil.isEmpty(jwtAccount) || !jwtAccount.equals(account)) {
+                if (StrUtil.isEmpty(jwtAccount) || !jwtAccount.equals(account) || !JwtUtil.verify(token)) {
                     //账号与token对应不上，清除token并重新生成
                     redisCacheInfoService.removeToken(account);
                     token = redisCacheInfoService.addToken(account);

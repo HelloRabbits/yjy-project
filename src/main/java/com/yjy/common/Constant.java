@@ -8,9 +8,14 @@ package com.yjy.common;
 public interface Constant {
 
     /**
+     * 请求前缀 为以后统一扩展用
+     */
+    String URL_PRE_API = "api";
+
+    /**
      * session中存放的用户信息
      */
-    public final static String SESSION_USER_INFO = "session_user_info";
+    String SESSION_USER_INFO = "session_user_info";
 
     String PREFIX_SHIRO_CACHE = "shiro:cache:account";
 
