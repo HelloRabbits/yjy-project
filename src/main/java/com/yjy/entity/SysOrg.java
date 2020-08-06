@@ -36,6 +36,11 @@ public class SysOrg implements Serializable {
     private String orgCd;
 
     /**
+     * 上一级节点id
+     */
+    private String idParent;
+
+    /**
      * 备注
      */
     private String reamark;

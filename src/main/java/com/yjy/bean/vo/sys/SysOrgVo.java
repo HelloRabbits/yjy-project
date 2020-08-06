@@ -1,14 +1,17 @@
 package com.yjy.bean.vo.sys;
 
+import com.yjy.bean.base.BaseVo;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author zhangjl
  * @description
  * @date 2020-08-05 13:03
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class SysOrgListVo {
+public class SysOrgVo extends BaseVo {
 
     private String idOrg;
 
@@ -26,6 +29,8 @@ public class SysOrgListVo {
      * 备注
      */
     private String reamark;
+
+    private String idParent;
 
     /**
      * 状态 1正常 0停用

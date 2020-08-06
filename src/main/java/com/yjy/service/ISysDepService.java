@@ -1,7 +1,9 @@
 package com.yjy.service;
 
+import com.yjy.bean.qo.sys.SysDepQo;
+import com.yjy.bean.vo.sys.SysDepVo;
 import com.yjy.entity.SysDep;
-import com.baomidou.mybatisplus.extension.service.IService;
+
 
 /**
  * <p>
@@ -11,6 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author zhangjl
  * @since 2020-07-28
  */
-public interface ISysDepService extends IService<SysDep> {
+public interface ISysDepService extends BaseService<SysDep, SysDepQo, SysDepVo> {
+
 
 }

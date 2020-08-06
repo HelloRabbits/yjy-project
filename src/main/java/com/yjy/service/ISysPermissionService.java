@@ -1,7 +1,8 @@
 package com.yjy.service;
 
+import com.yjy.bean.qo.sys.SysPermissionQo;
+import com.yjy.bean.vo.sys.SysPermissionVo;
 import com.yjy.entity.SysPermission;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author zhangjl
  * @since 2020-07-28
  */
-public interface ISysPermissionService extends IService<SysPermission> {
+public interface ISysPermissionService extends BaseService<SysPermission, SysPermissionQo, SysPermissionVo>{
+
 
 }

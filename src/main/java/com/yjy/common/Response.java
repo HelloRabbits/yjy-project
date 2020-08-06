@@ -23,6 +23,10 @@ public class Response<T> {
         return new Response<T>().setData(t);
     }
 
+    public static <T> Response<T> success() {
+        return new Response<T>();
+    }
+
     public static <T> Response<T> fail(int code, String msg) {
         return new Response<T>().setCode(code).setMsg(msg);
     }

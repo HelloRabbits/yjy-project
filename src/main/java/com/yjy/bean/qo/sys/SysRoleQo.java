@@ -7,16 +7,14 @@ import lombok.ToString;
 
 /**
  * @author zhangjl
- * @description
- * @date 2020-08-05 13:08
+ * @description 角色查询基础
+ * @date 2020-08-06 15:45
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ToString(callSuper = true)
-public class SysOrgQo extends PageQo {
+public class SysRoleQo extends PageQo {
 
-    private String orgName;
-
-    private String idParent;
+    private String idOrg;
 
 }

@@ -1,12 +1,14 @@
 package com.yjy.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.yjy.api.sys.SysOrgApi;
 import com.yjy.bean.base.PageInfo;
 import com.yjy.bean.dto.sys.SysOrgSaveDto;
 import com.yjy.bean.qo.sys.SysOrgQo;
-import com.yjy.bean.vo.sys.SysOrgListVo;
+import com.yjy.bean.vo.sys.SysOrgVo;
 import com.yjy.common.Constant;
 import com.yjy.common.Response;
+import com.yjy.entity.SysOrg;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,16 +28,16 @@ public class SysOrgController {
 
     @PutMapping("saveOrUpdate")
     public Response<String> save(@RequestBody SysOrgSaveDto dto) {
-        return Response.success(sysOrgApi.save(dto));
+        return Response.success(sysOrgApi.saveBase(BeanUtil.toBean(dto, SysOrg.class)));
     }
 
     @PostMapping("query/list")
-    public Response<List<SysOrgListVo>> queryList(@RequestBody SysOrgQo qo) {
+    public Response<List<SysOrgVo>> queryList(@RequestBody SysOrgQo qo) {
         return Response.success(sysOrgApi.queryList(qo));
     }
 
     @PostMapping("query/page")
-    public Response<PageInfo<SysOrgListVo>> queryPage(@RequestBody SysOrgQo qo){
+    public Response<PageInfo<SysOrgVo>> queryPage(@RequestBody SysOrgQo qo){
         return Response.success(sysOrgApi.queryPage(qo));
     }
 }

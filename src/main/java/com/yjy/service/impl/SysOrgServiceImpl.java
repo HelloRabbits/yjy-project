@@ -3,12 +3,12 @@ package com.yjy.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yjy.bean.base.LoginAccountInfo;
+import com.yjy.bean.base.PageInfo;
 import com.yjy.bean.qo.sys.SysOrgQo;
-import com.yjy.bean.vo.sys.SysOrgListVo;
+import com.yjy.bean.vo.sys.SysOrgVo;
 import com.yjy.common.enums.StateEnum;
 import com.yjy.entity.SysOrg;
 import com.yjy.mapper.SysOrgMapper;
@@ -63,9 +63,9 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
      * @param qo 入参
      * @return 返回参数
      */
-    public List<SysOrgListVo> queryList(SysOrgQo qo) {
+    public List<SysOrgVo> queryList(SysOrgQo qo) {
         List<SysOrg> list = list(getQuery(qo));
-        return list.stream().map(org -> BeanUtil.toBean(org, SysOrgListVo.class)).collect(Collectors.toList());
+        return list.stream().map(org -> BeanUtil.toBean(org, SysOrgVo.class)).collect(Collectors.toList());
     }
 
     /**
@@ -75,9 +75,9 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
      * @return 出参
      */
     @Override
-    public Page<SysOrg> queryPage(SysOrgQo qo) {
+    public PageInfo<SysOrgVo> queryPage(SysOrgQo qo) {
         Page<SysOrg> page = new Page<>(qo.getPageNo(), qo.getPageSize());
-        return page(page, getQuery(qo));
+        return PageInfo.copy(page(page, getQuery(qo)), SysOrgVo.class);
     }
 
 
@@ -87,12 +87,14 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
      * @param qo 入参
      * @return 出参
      */
-    private LambdaQueryWrapper<SysOrg> getQuery(SysOrgQo qo) {
+    public LambdaQueryWrapper<SysOrg> getQuery(SysOrgQo qo) {
         LambdaQueryWrapper<SysOrg> queryWrapper = Wrappers.lambdaQuery(SysOrg.class);
         if (StrUtil.isNotEmpty(qo.getOrgName())) {
             queryWrapper.like(SysOrg::getOrgName, qo.getOrgName());
         }
-
+        if (StrUtil.isNotEmpty(qo.getIdParent())) {
+            queryWrapper.eq(SysOrg::getIdParent, qo.getIdParent());
+        }
         return queryWrapper;
     }
 

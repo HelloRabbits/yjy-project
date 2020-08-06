@@ -1,7 +1,9 @@
 package com.yjy.service;
 
+import com.yjy.bean.qo.sys.SysRoleQo;
+import com.yjy.bean.vo.sys.SysRoleVo;
 import com.yjy.entity.SysRole;
-import com.baomidou.mybatisplus.extension.service.IService;
+
 
 /**
  * <p>
@@ -11,6 +13,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author zhangjl
  * @since 2020-07-28
  */
-public interface ISysRoleService extends IService<SysRole> {
+public interface ISysRoleService extends BaseService<SysRole, SysRoleQo, SysRoleVo> {
+
+
 
 }
