@@ -76,6 +76,8 @@ public class RedisService {
      * @return
      */
     public Boolean delKey(String key) {
+
+
         return redisTemplate.delete(key);
     }
 

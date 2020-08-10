@@ -1,16 +1,16 @@
-package com.yjy.bean.dto.sys;
+package com.yjy.bean.vo.account;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 /**
  * @author zhangjl
- * @description
- * @date 2020-08-06 16:44
+ * @description 权限菜单
+ * @date 2020-08-10 13:55
  */
 @Data
-public class SysPermissionSaveDto {
+public class PermissionMenuVo {
 
     private String idPermission;
 
@@ -32,7 +32,6 @@ public class SysPermissionSaveDto {
     /**
      * 权限编码，层级递进，如：user:save:name （全局唯一）
      */
-    @NotEmpty(message = "权限编码不能为空")
     private String permissionCd;
 
     /**
@@ -44,5 +43,16 @@ public class SysPermissionSaveDto {
      * 上一级权限主键 顶级默认0
      */
     private String idParent;
+
+    /**
+     * 1正常 0停用
+     */
+    private Integer state;
+
+    /**
+     * 子菜单
+     * 暂不考虑三级菜单
+     */
+    private List<PermissionMenuVo> subMenu;
 
 }

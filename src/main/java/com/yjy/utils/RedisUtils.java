@@ -17,4 +17,14 @@ public class RedisUtils {
     public static RedisService getService() {
         return SpringBeanFactoryUtil.getBean(RedisService.class);
     }
+
+    /**
+     * 根据前缀批量清空数据
+     *
+     * @param keyPre
+     */
+    public static void removeALlKey(String keyPre){
+        // TODO: 2020/8/7 批量清空缓存
+    }
+
 }

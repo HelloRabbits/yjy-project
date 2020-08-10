@@ -9,10 +9,7 @@ import com.yjy.bean.vo.sys.SysRoleVo;
 import com.yjy.common.Constant;
 import com.yjy.common.Response;
 import com.yjy.entity.SysRole;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -30,7 +27,7 @@ public class SysRoleController {
     private SysRoleApi sysRoleApi;
 
     @PutMapping("save")
-    public Response<String> save(SysRoleSaveDto dto) {
+    public Response<String> save(@RequestBody SysRoleSaveDto dto) {
         sysRoleApi.saveBase(BeanUtil.toBean(dto, SysRole.class));
         return Response.success();
     }
@@ -43,7 +40,7 @@ public class SysRoleController {
      * @return
      */
     @PostMapping("queryList")
-    public Response<List<SysRoleVo>> queryList(SysRoleQo qo) {
+    public Response<List<SysRoleVo>> queryList(@RequestBody SysRoleQo qo) {
         return Response.success(sysRoleApi.queryList(qo));
     }
 
@@ -54,7 +51,7 @@ public class SysRoleController {
      * @return
      */
     @PostMapping("queryPage")
-    public Response<PageInfo<SysRoleVo>> queryPage(SysRoleQo qo) {
+    public Response<PageInfo<SysRoleVo>> queryPage(@RequestBody SysRoleQo qo) {
         return Response.success(sysRoleApi.queryPage(qo));
     }
 

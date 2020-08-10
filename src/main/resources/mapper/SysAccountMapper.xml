@@ -20,6 +20,27 @@
         <if test="account != ''and account != null">
             and sa.account = #{account}
         </if>
-
     </select>
+
+
+    <select id="queryUserPermissionMenuList" resultType="com.yjy.bean.dto.sys.SysUserPermissionMenuDto">
+        select
+        sp.title,
+        sp.permission_cd permissionCd,
+        sp.url,
+        sp.id_parent     idParent,
+        sp.level
+        from sys_account sa
+        left join sys_account_role sar on sa.id_account = sar.id_account
+        left join sys_role sr on sr.id_role = sar.id_role
+        left join sys_role_permission srp on sar.id_role = srp.id_role
+        left join sys_permission sp on srp.id_permission = sp.id_permission
+        where sr.state = 1
+        and sp.state = 1
+        and sp.level = 1
+        <if test="idAccount != ''and idAccount != null">
+            and sa.id_account = #{idAccount}
+        </if>
+    </select>
+
 </mapper>

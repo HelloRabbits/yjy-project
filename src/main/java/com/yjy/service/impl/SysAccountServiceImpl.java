@@ -3,6 +3,7 @@ package com.yjy.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yjy.bean.dto.account.SysUserPermissionDto;
+import com.yjy.bean.dto.sys.SysUserPermissionMenuDto;
 import com.yjy.entity.SysAccount;
 import com.yjy.mapper.SysAccountMapper;
 import com.yjy.service.ISysAccountService;
@@ -32,6 +33,14 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAcco
             return null;
         }
         return sysAccountMapper.queryUserPermissionList(account);
+    }
+
+    @Override
+    public List<SysUserPermissionMenuDto> queryUserPermissionMenuList(String idAccount) {
+        if (StrUtil.isEmpty(idAccount)) {
+            return null;
+        }
+        return sysAccountMapper.queryUserPermissionMenuList(idAccount);
     }
 
     @Override

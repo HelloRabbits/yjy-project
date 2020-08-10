@@ -11,6 +11,7 @@ import com.yjy.bean.base.PageInfo;
 import com.yjy.bean.qo.sys.SysPermissionQo;
 import com.yjy.bean.vo.sys.SysPermissionVo;
 import com.yjy.common.enums.StateEnum;
+import com.yjy.common.exception.QuestionException;
 import com.yjy.entity.SysPermission;
 import com.yjy.mapper.SysPermissionMapper;
 import com.yjy.service.ISysPermissionService;
@@ -39,6 +40,12 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
 
     @Override
     public String saveBase(SysPermission permission) {
+        if (StrUtil.isNotEmpty(permission.getCd())) {
+            SysPermission cd = getWithCd(permission.getCd());
+            if (null != cd ) {
+                throw new QuestionException("权限编码 cd不能重复");
+            }
+        }
         if (ObjectUtil.isNotEmpty(loginAccountInfo)) {
             permission.setCreateUser(loginAccountInfo.getIdAccount());
         }
@@ -78,5 +85,13 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
         return query;
     }
 
+    @Override
+    public SysPermission getWithCd(String cd) {
+        return getOne(Wrappers.lambdaQuery(SysPermission.class).eq(SysPermission::getCd, cd));
+    }
 
+    @Override
+    public SysPermission getWithPermissionCd(String permissionCd) {
+        return getOne(Wrappers.lambdaQuery(SysPermission.class).eq(SysPermission::getPermissionCd, permissionCd));
+    }
 }

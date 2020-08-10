@@ -1,5 +1,8 @@
 package com.yjy.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 /**
  * @author zhangjl
  * @description
@@ -7,5 +10,9 @@ package com.yjy.utils;
  */
 public class JsonUtils {
 
+
+    public static Gson build() {
+        return new GsonBuilder().create();
+    }
 
 }

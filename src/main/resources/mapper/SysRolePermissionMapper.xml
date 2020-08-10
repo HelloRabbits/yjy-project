@@ -2,4 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yjy.mapper.SysRolePermissionMapper">
 
+
+    <select id="queryListWithIdRole" resultType="com.yjy.bean.vo.sys.SysRolePermissionVo" >
+        select sp.title,sp.cd,sp.id_permission idPermission,sp.id_parent idParent  from sys_permission sp
+        left join sys_role_permission srp on sp.id_permission = srp.id_permission
+        where sp.state =1 and srp.id_role = #{idRole}
+    </select>
+
 </mapper>

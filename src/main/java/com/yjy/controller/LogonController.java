@@ -4,6 +4,7 @@ package com.yjy.controller;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.yjy.api.account.AccountPermissionApi;
+import com.yjy.bean.vo.account.LogonBackInfoVo;
 import com.yjy.common.Constant;
 import com.yjy.common.Response;
 import com.yjy.common.exception.JwtException;
@@ -31,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RequestMapping("auth")
 @RestController
-public class LogonDemoController {
+public class LogonController {
 
     @Resource
     private ISysAccountService sysAccountService;
@@ -67,7 +68,7 @@ public class LogonDemoController {
      * @return
      */
     @GetMapping("/login/jwt")
-    public Response<String> jwtLogin(String account, String password, HttpServletResponse response) {
+    public Response<LogonBackInfoVo> jwtLogin(String account, String password, HttpServletResponse response) {
         if (StrUtil.isEmpty(account) || StrUtil.isEmpty(password)) {
             throw new UnknownAccountException("账号或密码错误");
         }
@@ -114,7 +115,11 @@ public class LogonDemoController {
         } catch (JwtException e) {
             e.printStackTrace();
         }
-        return Response.success("login success");
+        LogonBackInfoVo backInfoVo = new LogonBackInfoVo();
+        backInfoVo.setAccount(sysAccount.getAccount());
+        backInfoVo.setIdAccount(sysAccount.getIdAccount());
+        backInfoVo.setMenuVos(accountPermissionApi.queryMenuList(sysAccount.getIdAccount()));
+        return Response.success(backInfoVo);
     }
 
     /**
@@ -128,7 +133,4 @@ public class LogonDemoController {
         currentUser.logout();
         return Response.success("login out success");
     }
-
-
-
 }

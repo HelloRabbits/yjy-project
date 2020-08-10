@@ -5,8 +5,8 @@ import com.yjy.bean.base.BaseVo;
 import com.yjy.bean.base.PageInfo;
 import com.yjy.bean.base.PageQo;
 import com.yjy.service.BaseService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,8 +16,11 @@ import java.util.List;
  */
 public class BaseApi<T, K extends PageQo, V extends BaseVo, E extends BaseService<T, K, V>> {
 
-
-    @Resource
+    /**
+     * 这里必须要用 Autowired
+     * 不过会提示错误有点难受
+     */
+    @Autowired
     E baseService;
 
 

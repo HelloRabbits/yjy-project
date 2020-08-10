@@ -3,21 +3,37 @@ package com.yjy.api.account;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yjy.bean.base.AccountInfoCache;
 import com.yjy.bean.base.PermissionCache;
+import com.yjy.bean.dto.account.AccountRoleSaveDto;
 import com.yjy.bean.dto.account.SysUserPermissionDto;
+import com.yjy.bean.dto.sys.SysUserPermissionMenuDto;
+import com.yjy.bean.vo.account.PermissionMenuVo;
+import com.yjy.common.Constant;
+import com.yjy.common.enums.ErrorCodeEnum;
+import com.yjy.common.enums.PermissionLevelEnum;
 import com.yjy.common.exception.QuestionException;
 import com.yjy.entity.SysAccount;
+import com.yjy.entity.SysAccountRole;
 import com.yjy.entity.SysPerson;
 import com.yjy.entity.SysPersonDep;
+import com.yjy.service.ISysAccountRoleService;
 import com.yjy.service.ISysAccountService;
 import com.yjy.service.ISysPersonDepService;
 import com.yjy.service.ISysPersonService;
 import com.yjy.service.base.RedisCacheInfoService;
+import com.yjy.utils.RedisUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -40,6 +56,9 @@ public class AccountPermissionApi {
 
     @Resource
     private ISysPersonDepService sysPersonDepService;
+
+    @Resource
+    private ISysAccountRoleService sysAccountRoleService;
 
     /**
      * 获取缓存的账号信息
@@ -81,6 +100,7 @@ public class AccountPermissionApi {
      */
     public PermissionCache getPermissionsWithAccount(String account) {
         PermissionCache cache = cacheInfoService.getPermissionCache(account);
+        cache.setAccount(account);
         if (ObjectUtil.isEmpty(cache)) {
             cache = new PermissionCache();
             //查询角色和权限
@@ -92,9 +112,84 @@ public class AccountPermissionApi {
             cache.setRoles(permissionDtos.stream().map(SysUserPermissionDto::getRoleCd).collect(Collectors.toSet()));
             //初始化权限
             cache.setPermissions(permissionDtos.stream().map(SysUserPermissionDto::getPermissionCd).collect(Collectors.toSet()));
+            cacheInfoService.addPermissionCache(cache);
         }
-        cache.setAccount(account);
         return cache;
     }
 
+    /**
+     * 保存账号和角色的关联关心
+     *
+     * @param dto
+     */
+    public void saveAccountRole(AccountRoleSaveDto dto) {
+        if (StrUtil.isEmpty(dto.getIdAccount())) {
+            throw new QuestionException(ErrorCodeEnum.ERROR_11001.getCode(), "idAccount不能为空");
+        }
+        //先全部删除
+        sysAccountRoleService.remove(Wrappers.lambdaQuery(SysAccountRole.class).eq(SysAccountRole::getIdAccount, dto.getIdAccount()));
+        //重新添加
+        dto.getIdRoles().forEach(role -> {
+            SysAccountRole accountRole = new SysAccountRole();
+            accountRole.setCreateTime(LocalDateTime.now());
+            accountRole.setIdAccount(dto.getIdAccount());
+            accountRole.setIdRole(role);
+            sysAccountRoleService.save(accountRole);
+        });
+        SysAccount account = sysAccountService.getById(dto.getIdAccount());
+        //所有账号缓存的权限
+        RedisUtils.getService().delKey(Constant.REDIS_PERMISSION_INFO + account.getAccount());
+    }
+
+    /**
+     * 按账号id查询菜单权限
+     *
+     * @param idAccount 账号id
+     * @return List<PermissionMenuVo>
+     */
+    public List<PermissionMenuVo> queryMenuList(String idAccount) {
+        List<SysUserPermissionMenuDto> menuDtos = sysAccountService.queryUserPermissionMenuList(idAccount);
+        List<PermissionMenuVo> menuVos = menuDtos.stream().map(m -> BeanUtil.toBean(m, PermissionMenuVo.class)).collect(Collectors.toList());
+        //子菜单
+        List<PermissionMenuVo> sonMenus = menuVos.stream().filter(m -> StrUtil.isNotEmpty(m.getIdParent())).collect(Collectors.toList());
+        //获取顶级菜单
+        return menuVos.stream()
+                //顶级菜单
+                .filter(m -> "0".equals(m.getIdParent()))
+                .peek(m -> m.setSubMenu(getChild(m.getIdPermission(), sonMenus)))
+                .collect(Collectors.toList());
+    }
+
+
+    /**
+     * 递归查找子菜单
+     *
+     * @param id       当前菜单id
+     * @param rootMenu 要查找的列表
+     * @return List<PermissionMenuVo>
+     */
+    private List<PermissionMenuVo> getChild(String id, List<PermissionMenuVo> rootMenu) {
+        // 子菜单
+        List<PermissionMenuVo> childList = new ArrayList<>();
+        for (PermissionMenuVo menu : rootMenu) {
+            // 遍历所有节点，将父菜单id与传过来的id比较
+            if (StrUtil.isNotEmpty(menu.getIdParent())) {
+                if (menu.getIdParent().equals(id)) {
+                    childList.add(menu);
+                }
+            }
+        }
+        // 把子菜单的子菜单再循环一遍
+        for (PermissionMenuVo menu : childList) {// 没有url子菜单还有子菜单
+            if (StrUtil.isNotEmpty(menu.getUrl())) {
+                // 递归
+                menu.setSubMenu(getChild(menu.getIdPermission(), rootMenu));
+            }
+        }
+        // 递归退出条件
+        if (childList.size() == 0) {
+            return null;
+        }
+        return childList;
+    }
 }

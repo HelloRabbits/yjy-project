@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 public class PageInfo<T> {
 
     private List<T> list;
-    private long total;
-    private long pageSize;
-    private long pageNo;
+    private long total = 0L;
+    private long pageSize = 20L;
+    private long pageNo = 1L;
 
 
     public static <K> PageInfo<K> copy(Page<?> page, Class<K> k) {
