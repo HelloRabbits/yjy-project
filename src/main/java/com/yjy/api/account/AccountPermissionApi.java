@@ -4,7 +4,6 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.yjy.bean.base.AccountInfoCache;
 import com.yjy.bean.base.PermissionCache;
@@ -14,7 +13,6 @@ import com.yjy.bean.dto.sys.SysUserPermissionMenuDto;
 import com.yjy.bean.vo.account.PermissionMenuVo;
 import com.yjy.common.Constant;
 import com.yjy.common.enums.ErrorCodeEnum;
-import com.yjy.common.enums.PermissionLevelEnum;
 import com.yjy.common.exception.QuestionException;
 import com.yjy.entity.SysAccount;
 import com.yjy.entity.SysAccountRole;
@@ -31,9 +29,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 

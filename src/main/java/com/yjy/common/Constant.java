@@ -17,7 +17,7 @@ public interface Constant {
      */
     String SESSION_USER_INFO = "session_user_info";
 
-    String PREFIX_SHIRO_CACHE = "shiro:cache:account";
+    String PREFIX_SHIRO_CACHE = "shiro:cache:account:";
 
     /**
      * redis 缓存个人信息

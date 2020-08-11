@@ -4,6 +4,7 @@ package com.yjy.controller;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.yjy.api.account.AccountPermissionApi;
+import com.yjy.bean.base.LoginAccountInfo;
 import com.yjy.bean.vo.account.LogonBackInfoVo;
 import com.yjy.common.Constant;
 import com.yjy.common.Response;
@@ -42,6 +43,10 @@ public class LogonController {
 
     @Resource
     private RedisCacheInfoService redisCacheInfoService;
+
+    @Resource
+    private LoginAccountInfo loginAccountInfo;
+
     /**
      * 登陆
      *
@@ -125,10 +130,19 @@ public class LogonController {
     /**
      * 登出
      *
-     * @return
+     * @return Response
      */
     @GetMapping("/logout")
     public Response<String> logout() {
+        //清除redis缓存的用户信息和权限信息
+        String account = loginAccountInfo.getAccount();
+        //清除账号信息
+        redisCacheInfoService.removeAccountInfoCache(account);
+        //清除权限信息
+        redisCacheInfoService.removePermissionCache(account);
+        //清除token
+        redisCacheInfoService.removeToken(account);
+
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
         return Response.success("login out success");

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -54,6 +55,10 @@ public class DemoController {
         System.out.println(JSON.toJSONString(attribute));
         System.out.println(JSON.toJSONString(loginAccountInfo));
         throw new QuestionException("yichang");
+    }
+
+    @GetMapping("redis/pipeGetLike")
+    public void pipeGetLike(String key) {
     }
 
     @GetMapping("redis/addObj")

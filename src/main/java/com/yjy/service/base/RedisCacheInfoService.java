@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * 统一处理方便全局变更缓存的key和时间
  * 1.账号信息的缓存不与token关联，如果账号数据未发生变动则不更新缓存，直到失效
+ * 2.所有的缓存都是30分钟有效期，如果权限或个人信息有变更的话 需要等30分钟或者主动退出后登陆即可，这里可以将时间设置短一点，在token校验处刷新
  * </p>
  * @date 2020-07-29 10:42
  */
@@ -35,7 +35,6 @@ public class RedisCacheInfoService {
     @Value("${redis.cache.time.token}")
     private Long tokenCacheTime;
 
-    // TODO: 2020/7/29 这里可用mybatis的缓存
 
     /**
      * 缓存账号基本信息
@@ -44,7 +43,7 @@ public class RedisCacheInfoService {
      */
     public String addAccountInfoCache(AccountInfoCache cache) {
         String key = Constant.REDIS_ACCOUNT_INFO + cache.getAccount();
-        redisService.objAddExpire(key, cache, accountCacheTime, TimeUnit.DAYS);
+        redisService.objAddExpire(key, cache, accountCacheTime, TimeUnit.MINUTES);
         return key;
     }
 
@@ -70,7 +69,16 @@ public class RedisCacheInfoService {
      * @return
      */
     public Boolean refreshAccountInfoCache(String account) {
-        return redisService.expire(Constant.REDIS_ACCOUNT_INFO + account, accountCacheTime, TimeUnit.DAYS);
+        return redisService.expire(Constant.REDIS_ACCOUNT_INFO + account, accountCacheTime, TimeUnit.MINUTES);
+    }
+
+    /**
+     * 删除账号缓存
+     *
+     * @param account 账号
+     */
+    public Boolean removeAccountInfoCache(String account) {
+        return redisService.delKey(Constant.REDIS_ACCOUNT_INFO + account);
     }
 
 
@@ -82,7 +90,7 @@ public class RedisCacheInfoService {
      */
     public String addPermissionCache(PermissionCache cache){
         String key = Constant.REDIS_PERMISSION_INFO + cache.getAccount();
-        redisService.objAddExpire(key, cache, permissionCacheTime, TimeUnit.DAYS);
+        redisService.objAddExpire(key, cache, permissionCacheTime, TimeUnit.MINUTES);
         return key;
     }
 
@@ -103,6 +111,14 @@ public class RedisCacheInfoService {
     }
 
 
+    /**
+     * 删除账号缓存
+     *
+     * @param account 账号
+     */
+    public Boolean removePermissionCache(String account) {
+        return redisService.delKey(Constant.REDIS_PERMISSION_INFO + account);
+    }
 
     /**
      * 缓存token的信息
@@ -120,7 +136,7 @@ public class RedisCacheInfoService {
         String token = JwtUtil.sign(account, System.currentTimeMillis());
         //存入的过程可能会有一点误差，在请求接口的时候进行校验，若剩余时间小于 10分钟 则进行刷新token，这样多端登陆的情况下可能其他端的会被踢掉。
         //或者其他端请求接口的时候如果发现redis中的token时间更新了，则相应接口的同时刷新header的token
-        redisService.strAddExpire(key, token, tokenCacheTime, TimeUnit.DAYS);
+        redisService.strAddExpire(key, token, tokenCacheTime, TimeUnit.MINUTES);
         return token;
     }
 
@@ -145,7 +161,7 @@ public class RedisCacheInfoService {
      */
     public Boolean refreshToken(String account) {
         String key = Constant.REDIS_JWT_TOKEN + account;
-        return redisService.expire(key, tokenCacheTime, TimeUnit.DAYS);
+        return redisService.expire(key, tokenCacheTime, TimeUnit.MINUTES);
     }
 
     /**

@@ -25,6 +25,8 @@ public class RedisUtils {
      */
     public static void removeALlKey(String keyPre){
         // TODO: 2020/8/7 批量清空缓存
+        
+
     }
 
 }

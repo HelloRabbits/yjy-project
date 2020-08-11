@@ -1,6 +1,7 @@
 package com.yjy.service.base;
 
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
@@ -95,7 +96,7 @@ public class RedisService {
     /**
      * 设置key的过期时间
      *
-     * @param key key
+     * @param key  key
      * @param time time
      * @param unit 单位
      * @return Boolean
@@ -243,6 +244,8 @@ public class RedisService {
     public Boolean setBit(String key, long value, boolean var4) {
         return redisTemplate.opsForValue().setBit(key, value, var4);
     }
+
+    // -----------------------------pipeline(管道) -------------------------------
 
     public RedisTemplate<String, Object> getRedisTemplate() {
         return redisTemplate;

@@ -40,11 +40,11 @@ swagger:
 redis:
   cache:
     time:
-      #账号信息缓存时长 单位天
+      #账号信息缓存时长 单位分钟
       account: 30
-      #token缓存时间 单位天
+      #token缓存时间 单位分钟
       token: 30
-      #权限信息缓存时长 单位天
+      #权限信息缓存时长 单位分钟
       permission: 30
   
 
