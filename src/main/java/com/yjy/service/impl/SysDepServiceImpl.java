@@ -68,6 +68,15 @@ public class SysDepServiceImpl extends ServiceImpl<SysDepMapper, SysDep> impleme
     }
 
 
+    @Override
+    public SysDepVo getDetailById(String id) {
+        if (StrUtil.isEmpty(id)) {
+            return null;
+        }
+        return BeanUtil.toBean(getById(id), SysDepVo.class);
+    }
+
+    @Override
     public LambdaQueryWrapper<SysDep> getQuery(SysDepQo qo) {
         LambdaQueryWrapper<SysDep> queryWrapper = Wrappers.lambdaQuery(SysDep.class);
         if (StrUtil.isNotEmpty(qo.getIdParent())) {
@@ -75,4 +84,5 @@ public class SysDepServiceImpl extends ServiceImpl<SysDepMapper, SysDep> impleme
         }
         return queryWrapper;
     }
+
 }

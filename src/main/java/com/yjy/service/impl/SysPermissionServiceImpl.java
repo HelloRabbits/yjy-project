@@ -77,12 +77,11 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     }
 
     @Override
-    public LambdaQueryWrapper<SysPermission> getQuery(SysPermissionQo qo) {
-        LambdaQueryWrapper<SysPermission> query = Wrappers.lambdaQuery(SysPermission.class);
-        if (StrUtil.isNotEmpty(qo.getIdParent())) {
-            query.eq(SysPermission::getIdParent, qo.getIdParent());
+    public SysPermissionVo getDetailById(String id) {
+        if (StrUtil.isEmpty(id)) {
+            return null;
         }
-        return query;
+        return BeanUtil.toBean(getById(id), SysPermissionVo.class);
     }
 
     @Override
@@ -94,4 +93,15 @@ public class SysPermissionServiceImpl extends ServiceImpl<SysPermissionMapper, S
     public SysPermission getWithPermissionCd(String permissionCd) {
         return getOne(Wrappers.lambdaQuery(SysPermission.class).eq(SysPermission::getPermissionCd, permissionCd));
     }
+
+
+    @Override
+    public LambdaQueryWrapper<SysPermission> getQuery(SysPermissionQo qo) {
+        LambdaQueryWrapper<SysPermission> query = Wrappers.lambdaQuery(SysPermission.class);
+        if (StrUtil.isNotEmpty(qo.getIdParent())) {
+            query.eq(SysPermission::getIdParent, qo.getIdParent());
+        }
+        return query;
+    }
+
 }

@@ -55,4 +55,14 @@ public class SysRoleController {
         return Response.success(sysRoleApi.queryPage(qo));
     }
 
+    /**
+     * 获取详情
+     *
+     * @param idRole
+     * @return
+     */
+    @GetMapping("get/detail/id")
+    public Response<SysRoleVo> getDetailById(@RequestParam(name = "idRole") String idRole) {
+        return Response.success(sysRoleApi.getDetailById(idRole));
+    }
 }

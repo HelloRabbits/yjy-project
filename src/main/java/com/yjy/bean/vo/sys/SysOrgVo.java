@@ -4,6 +4,8 @@ import com.yjy.bean.base.BaseVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 /**
  * @author zhangjl
  * @description
@@ -36,6 +38,8 @@ public class SysOrgVo extends BaseVo {
      * 状态 1正常 0停用
      */
     private Integer state;
+
+    private LocalDateTime createTime;
 
 
 }

@@ -44,7 +44,7 @@ public class SysDepController {
      * 基础列表条件查询（不分页）
      *
      * @param qo 入参
-     * @return  List<SysDepListVo>
+     * @return List<SysDepListVo>
      */
     @PostMapping("queryList")
     public Response<List<SysDepVo>> queryList(@RequestBody SysDepQo qo) {
@@ -55,11 +55,15 @@ public class SysDepController {
      * 基础列表条件查询（分页）
      *
      * @param qo 入参
-     * @return  Page<SysDep>
+     * @return Page<SysDep>
      */
     @PostMapping("queryPage")
     public Response<PageInfo<SysDepVo>> queryPage(@RequestBody SysDepQo qo) {
         return Response.success(sysDepApi.queryPage(qo));
     }
 
+    @GetMapping("get/detail/id")
+    public Response<SysDepVo> getDetailById(@RequestParam(name = "idDep") String idDep) {
+        return Response.success(sysDepApi.getDetailById(idDep));
+    }
 }

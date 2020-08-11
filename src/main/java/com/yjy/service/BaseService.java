@@ -49,6 +49,14 @@ public interface BaseService<T, K extends PageQo, V extends BaseVo> extends ISer
     PageInfo<V> queryPage(K qo);
 
     /**
+     * 查询详情
+     *
+     * @param id 主键 默认使用String类型，如果其他类型，内部转换
+     * @return
+     */
+    V getDetailById(String id);
+
+    /**
      * 简单
      * 条件参数拼接
      *
@@ -56,4 +64,5 @@ public interface BaseService<T, K extends PageQo, V extends BaseVo> extends ISer
      * @return
      */
     LambdaQueryWrapper<T> getQuery(K qo);
+
 }

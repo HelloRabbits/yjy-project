@@ -5,10 +5,12 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.yjy.api.account.AccountPermissionApi;
 import com.yjy.bean.base.LoginAccountInfo;
+import com.yjy.bean.dto.account.ChangePwdDto;
 import com.yjy.bean.vo.account.LogonBackInfoVo;
 import com.yjy.common.Constant;
 import com.yjy.common.Response;
 import com.yjy.common.exception.JwtException;
+import com.yjy.common.exception.QuestionException;
 import com.yjy.entity.SysAccount;
 import com.yjy.service.ISysAccountService;
 import com.yjy.service.base.RedisCacheInfoService;
@@ -18,9 +20,8 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -147,4 +148,19 @@ public class LogonController {
         currentUser.logout();
         return Response.success("login out success");
     }
+
+    @PostMapping("change/pwd")
+    public Response<String> changePwd(@Validated @RequestBody ChangePwdDto dto){
+        SysAccount account = sysAccountService.getById(loginAccountInfo.getIdAccount());
+        if (account != null && account.getPassword().equals(dto.getOldPwd())) {
+            account.setPassword(dto.getNewPwd());
+            sysAccountService.updateById(account);
+            //不清除token 无需退出登陆,再次登陆的时候有效
+        } else {
+            throw new QuestionException("原密码错误");
+        }
+
+        return Response.success();
+    }
+
 }

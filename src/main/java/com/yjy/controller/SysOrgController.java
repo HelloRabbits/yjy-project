@@ -40,4 +40,10 @@ public class SysOrgController {
     public Response<PageInfo<SysOrgVo>> queryPage(@RequestBody SysOrgQo qo){
         return Response.success(sysOrgApi.queryPage(qo));
     }
+
+    @GetMapping("get/detail/id")
+    public Response<SysOrgVo> getDetailById(@RequestParam(name = "idOrg") String idOrg){
+        return Response.success(sysOrgApi.getDetailById(idOrg));
+    }
+
 }

@@ -80,6 +80,13 @@ public class SysOrgServiceImpl extends ServiceImpl<SysOrgMapper, SysOrg> impleme
         return PageInfo.copy(page(page, getQuery(qo)), SysOrgVo.class);
     }
 
+    @Override
+    public SysOrgVo getDetailById(String id) {
+        if (StrUtil.isEmpty(id)) {
+            return null;
+        }
+        return BeanUtil.toBean(getById(id), SysOrgVo.class);
+    }
 
     /**
      * 拼接参数

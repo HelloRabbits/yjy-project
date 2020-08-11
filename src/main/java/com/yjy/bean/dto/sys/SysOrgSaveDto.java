@@ -27,4 +27,9 @@ public class SysOrgSaveDto {
      */
     private String reamark;
 
+    /**
+     * 上一级id
+     */
+    private String idParent;
+
 }

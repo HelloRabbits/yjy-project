@@ -69,6 +69,11 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         return PageInfo.copy(page(page, getQuery(qo)), SysRoleVo.class);
     }
 
+    @Override
+    public SysRoleVo getDetailById(String id) {
+        return BeanUtil.toBean(getById(id), SysRoleVo.class);
+    }
+
 
     public LambdaQueryWrapper<SysRole> getQuery(SysRoleQo qo) {
         LambdaQueryWrapper<SysRole> queryWrapper = Wrappers.lambdaQuery(SysRole.class);

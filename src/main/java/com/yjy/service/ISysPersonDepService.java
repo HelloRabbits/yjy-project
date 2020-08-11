@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 /**
  * <p>
  * 部门和成员之间的关系 服务类
+ * 目前暂定人员只能属于一个部门
  * </p>
  *
  * @author zhangjl

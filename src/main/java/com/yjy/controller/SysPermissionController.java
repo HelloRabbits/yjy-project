@@ -45,6 +45,11 @@ public class SysPermissionController {
         return Response.success(sysPermissionApi.queryPage(qo));
     }
 
+    @GetMapping("get/detail/id")
+    public Response<SysPermissionVo> getDetailById(@RequestParam String idPermission){
+        return Response.success(sysPermissionApi.getDetailById(idPermission));
+    }
+
 
     @PutMapping("saveRolePermission")
     public Response<String> saveRolePermission(@Validated @RequestBody SysRolePermissionSaveDto saveDto) {
