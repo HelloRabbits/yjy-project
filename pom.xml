@@ -21,7 +21,7 @@
         <mysql.version>8.0.18</mysql.version>
         <okhttp.version>3.8.1</okhttp.version>
         <taobao-sdk.version>1.0</taobao-sdk.version>
-        <guava.version>25.0-jre</guava.version>
+        <guava.version>29.0-jre</guava.version>
         <redisson.version>3.12.5</redisson.version>
     </properties>
 
